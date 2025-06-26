@@ -1,4 +1,5 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import { useRouter } from 'next/navigation';
 import LoginForm from '@/components/auth/login-form';
 import { useAuthStore } from '@/lib/store';
@@ -29,7 +30,7 @@ describe('LoginForm', () => {
       push: mockPush,
     });
 
-    (useAuthStore as jest.Mock).mockReturnValue({
+    (useAuthStore as unknown as jest.Mock).mockReturnValue({
       login: mockLogin,
     });
   });
