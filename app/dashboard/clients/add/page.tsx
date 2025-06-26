@@ -11,7 +11,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { useClientStore } from '@/lib/store';
+import { Client, useClientStore } from '@/lib/store';
 import { ArrowLeft, Plus, X } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -57,25 +57,35 @@ export default function AddClientPage() {
 
   const onSubmit = async (data: ClientFormData) => {
     setIsSubmitting(true);
-    
+  
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
-    
+  
+    // Calculer un nouvel ID unique
+    const clients = useClientStore.getState().clients;
+  
+    // Assurez-vous que tous les IDs sont des entiers valides
+    const ids = clients.map(client => parseInt(client.id)).filter(id => !isNaN(id));
+  
+    // Trouver le maximum et ajouter 1
+    const newId = (Math.max(0, ...ids) + 1).toString();
+  
     addClient({
-      ...data,
+      ...(data as Omit<Client, "createdAt" | "id" | "activities">),
+      id: newId, // Ajouter l'ID calculé
       tags,
-    });
-
+    } as Client);
+  
     toast.success('Client ajouté avec succès !', {
       description: `${data.firstName} ${data.lastName} a été ajouté à votre base de données.`,
     });
-
+  
     // Reset form
     reset();
     setTags([]);
-    
+  
     setIsSubmitting(false);
-    
+  
     // Redirect to clients list
     setTimeout(() => {
       router.push('/dashboard/clients');

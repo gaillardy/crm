@@ -188,12 +188,19 @@ export const useClientStore = create<ClientState>()(
       itemsPerPage: 10,
       selectedTags: [],
       addClient: (clientData) => {
+        const currentClients = get().clients;
+      
+        // Calculer un nouvel ID unique basé sur les IDs existants
+        const ids = currentClients.map(client => parseInt(client.id)).filter(id => !isNaN(id));
+        const newId = (Math.max(0, ...ids) + 1).toString();
+      
         const newClient: Client = {
           ...clientData,
-          id: Date.now().toString(),
+          id: newId, // Utiliser l'ID séquentiel
           createdAt: new Date().toISOString(),
           activities: []
         };
+      
         set((state) => ({
           clients: [...state.clients, newClient]
         }));
