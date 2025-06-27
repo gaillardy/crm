@@ -111,10 +111,6 @@ L'application sera accessible sur `http://localhost:3000`
 - **Email** : admin@arimayi.com
 - **Mot de passe** : password123
 
-## 🌐 Déploiement
-
-Le projet a été déployé sur Netlify et est disponible à l'URL : **http://netlify.crm.app**
-
 ### Configuration de Déploiement
 - **Build Command** : `npm run build`
 - **Publish Directory** : `out`
